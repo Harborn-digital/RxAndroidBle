@@ -3,14 +3,12 @@ package com.polidea.rxandroidble2;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
-
 import androidx.annotation.NonNull;
 
 import com.polidea.rxandroidble2.exceptions.BleCharacteristicNotFoundException;
 import com.polidea.rxandroidble2.exceptions.BleDescriptorNotFoundException;
 import com.polidea.rxandroidble2.exceptions.BleServiceNotFoundException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Callable;
@@ -28,14 +26,7 @@ public class RxBleDeviceServices {
     final List<BluetoothGattService> bluetoothGattServices;
 
     public RxBleDeviceServices(List<BluetoothGattService> bluetoothGattServices) {
-        List<BluetoothGattService> combinedBluetoothGattServices = new ArrayList<>();
-
-        for (BluetoothGattService bluetoothGattService : bluetoothGattServices) {
-            combinedBluetoothGattServices.add(bluetoothGattService);
-            combinedBluetoothGattServices.addAll(bluetoothGattService.getIncludedServices());
-        }
-
-        this.bluetoothGattServices = combinedBluetoothGattServices;
+        this.bluetoothGattServices = bluetoothGattServices;
     }
 
     /**
