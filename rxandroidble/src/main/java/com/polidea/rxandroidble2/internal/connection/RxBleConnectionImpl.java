@@ -1,9 +1,17 @@
 package com.polidea.rxandroidble2.internal.connection;
 
+import static android.bluetooth.BluetoothGattCharacteristic.PROPERTY_INDICATE;
+import static android.bluetooth.BluetoothGattCharacteristic.PROPERTY_NOTIFY;
+import static android.bluetooth.BluetoothGattCharacteristic.PROPERTY_READ;
+import static android.bluetooth.BluetoothGattCharacteristic.PROPERTY_SIGNED_WRITE;
+import static android.bluetooth.BluetoothGattCharacteristic.PROPERTY_WRITE;
+import static android.bluetooth.BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE;
+
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.os.DeadObjectException;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
@@ -39,13 +47,6 @@ import io.reactivex.Single;
 import io.reactivex.SingleSource;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Function;
-
-import static android.bluetooth.BluetoothGattCharacteristic.PROPERTY_INDICATE;
-import static android.bluetooth.BluetoothGattCharacteristic.PROPERTY_NOTIFY;
-import static android.bluetooth.BluetoothGattCharacteristic.PROPERTY_READ;
-import static android.bluetooth.BluetoothGattCharacteristic.PROPERTY_SIGNED_WRITE;
-import static android.bluetooth.BluetoothGattCharacteristic.PROPERTY_WRITE;
-import static android.bluetooth.BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE;
 
 @ConnectionScope
 public class RxBleConnectionImpl implements RxBleConnection {
@@ -130,11 +131,15 @@ public class RxBleConnectionImpl implements RxBleConnection {
 
     @Override
     public Single<RxBleDeviceServices> discoverServices() {
+        System.out.println("***** discoverServices reset");
+        serviceDiscoveryManager.reset();
         return serviceDiscoveryManager.getDiscoverServicesSingle(20L, TimeUnit.SECONDS);
     }
 
     @Override
     public Single<RxBleDeviceServices> discoverServices(long timeout, @NonNull TimeUnit timeUnit) {
+        System.out.println("***** discoverServices reset");
+        serviceDiscoveryManager.reset();
         return serviceDiscoveryManager.getDiscoverServicesSingle(timeout, timeUnit);
     }
 
@@ -240,9 +245,9 @@ public class RxBleConnectionImpl implements RxBleConnection {
     @Override
     public Single<byte[]> writeCharacteristic(@NonNull BluetoothGattCharacteristic characteristic, @NonNull byte[] data) {
         return illegalOperationChecker.checkAnyPropertyMatches(
-                characteristic,
-                PROPERTY_WRITE | PROPERTY_WRITE_NO_RESPONSE | PROPERTY_SIGNED_WRITE
-        ).andThen(operationQueue.queue(operationsProvider.provideWriteCharacteristic(characteristic, data)))
+                        characteristic,
+                        PROPERTY_WRITE | PROPERTY_WRITE_NO_RESPONSE | PROPERTY_SIGNED_WRITE
+                ).andThen(operationQueue.queue(operationsProvider.provideWriteCharacteristic(characteristic, data)))
                 .firstOrError();
     }
 
