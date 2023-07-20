@@ -105,6 +105,13 @@ public class RxBleGattCallback {
         }
 
         @Override
+        public void onServiceChanged(BluetoothGatt gatt) {
+            LoggerUtil.logCallback("onServiceChanged", gatt);
+            gatt.discoverServices();
+            super.onServiceChanged(gatt);
+        }
+
+        @Override
         public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
             LoggerUtil.logCallback("onCharacteristicRead", gatt, status, characteristic, true);
             nativeCallbackDispatcher.notifyNativeReadCallback(gatt, characteristic, status);
