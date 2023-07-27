@@ -131,14 +131,14 @@ public class RxBleConnectionImpl implements RxBleConnection {
 
     @Override
     public Single<RxBleDeviceServices> discoverServices() {
-        System.out.println("***** discoverServices reset");
+        System.out.println("***** discoverServices reset 1");
         serviceDiscoveryManager.reset();
         return serviceDiscoveryManager.getDiscoverServicesSingle(20L, TimeUnit.SECONDS);
     }
 
     @Override
     public Single<RxBleDeviceServices> discoverServices(long timeout, @NonNull TimeUnit timeUnit) {
-        System.out.println("***** discoverServices reset");
+        System.out.println("***** discoverServices reset 2");
         serviceDiscoveryManager.reset();
         return serviceDiscoveryManager.getDiscoverServicesSingle(timeout, timeUnit);
     }

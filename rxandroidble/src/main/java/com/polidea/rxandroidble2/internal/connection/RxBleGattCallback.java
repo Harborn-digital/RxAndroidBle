@@ -106,6 +106,7 @@ public class RxBleGattCallback {
 
         @Override
         public void onServiceChanged(BluetoothGatt gatt) {
+            System.out.println("***** onServiceChanged called!!");
             LoggerUtil.logCallback("onServiceChanged", gatt, 0);
             gatt.discoverServices();
             super.onServiceChanged(gatt);
