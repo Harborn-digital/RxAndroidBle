@@ -175,6 +175,7 @@ public class RxBleConnectionImpl implements RxBleConnection {
     @Override
     public Observable<Observable<byte[]>> setupNotification(@NonNull BluetoothGattCharacteristic characteristic,
                                                             @NonNull NotificationSetupMode setupMode) {
+        System.out.println("***** setupNotification char: " + characteristic.getUuid() + ", mode: " + setupMode);
         return illegalOperationChecker.checkAnyPropertyMatches(characteristic, PROPERTY_NOTIFY)
                 .andThen(notificationIndicationManager.setupServerInitiatedCharacteristicRead(characteristic, setupMode, false));
     }
@@ -204,6 +205,7 @@ public class RxBleConnectionImpl implements RxBleConnection {
     @Override
     public Observable<Observable<byte[]>> setupIndication(@NonNull BluetoothGattCharacteristic characteristic,
                                                           @NonNull NotificationSetupMode setupMode) {
+        System.out.println("***** setupIndication char: " + characteristic.getUuid() + ", mode: " + setupMode);
         return illegalOperationChecker.checkAnyPropertyMatches(characteristic, PROPERTY_INDICATE)
                 .andThen(notificationIndicationManager.setupServerInitiatedCharacteristicRead(characteristic, setupMode, true));
     }
